@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
+import Rating from './Rating';
 
 const Product = ({ product }) => {
   return (
@@ -14,14 +16,19 @@ const Product = ({ product }) => {
           </Card.Title>
         </a>
         <Card.Text as='div'>
-          <div className='my-3'>
-            {product.rating} from {product.numReviews}
-          </div>
+          <Rating
+            value={product.rating}
+            text={`${product.numReviews} reviews`}
+          />
         </Card.Text>
         <Card.Text as='h3'>${product.price}</Card.Text>
       </Card.Body>
     </Card>
   );
+};
+
+Product.propTypes = {
+  product: PropTypes.object.isRequired,
 };
 
 export default Product;
