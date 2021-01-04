@@ -7,7 +7,7 @@ import Product from '../models/Product.js';
 // @access  Public
 const getProducts = asyncHandler(async (req, res, next) => {
   const products = await Product.find();
-  res.status(200).json({ success: true, data: products });
+  res.status(200).json({ success: true, products });
 });
 
 // @desc    Get single product
@@ -22,7 +22,7 @@ const getProduct = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: product,
+    product,
   });
 });
 
