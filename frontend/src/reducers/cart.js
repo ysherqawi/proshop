@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM } from '../actions/types';
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from '../actions/types';
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
   const { type, payload } = action;
@@ -13,6 +13,11 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         cartItems: state.cartItems.map((x) =>
           x.product === existItem.product ? item : x
         ),
+      };
+    case CART_REMOVE_ITEM:
+      return {
+        ...state,
+        cartItems: state.cartItems.filter((x) => x.product !== payload),
       };
     default:
       return state;

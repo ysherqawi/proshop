@@ -11,7 +11,7 @@ import {
   Button,
   Card,
 } from 'react-bootstrap';
-import { addToCart } from './../actions/cart';
+import { addToCart, removeFromCart } from './../actions/cart';
 
 const CartScreen = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -25,7 +25,18 @@ const CartScreen = ({ match, location, history }) => {
   }, [dispatch, productId, qty]);
 
   const removeFromCartHandler = (id) => {
-    console.log('removed');
+    /*
+    Error: 
+    *if the cart is empty in local storage but there is still an id in the url
+    when refresh a call to addToCart happens and the item which its id in the url will be added
+    also this happens if it's not empty and refresh after remove the item will be added again  
+   Temp Fix:
+      history.push('/cart');
+     for on time when a remove happens
+    */
+    for (let i = 0; i < 1; i++) history.push('/cart');
+
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
@@ -38,12 +49,9 @@ const CartScreen = ({ match, location, history }) => {
         <Col md={8}>
           <h1>Shopping Cart</h1>
           {cartItems.length === 0 ? (
-            <>
-              <Link className='btn btn-light my-3' to='/'>
-                Go Back
-              </Link>
-              <Message>Your cart is empty</Message>
-            </>
+            <Message>
+              Your cart is empty <Link to='/'>Go Back</Link>
+            </Message>
           ) : (
             <ListGroup variant='flush'>
               {cartItems.map((item) => (
