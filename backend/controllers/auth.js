@@ -27,4 +27,18 @@ const login = asyncHandler(async (req, res, next) => {
   });
 });
 
-export { login };
+// @desc    Get user profile
+// @route   GET /api/auth/profle
+// @access  Private
+const getUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+  if (!user) return next(new ErrorResponse('User not found', 404));
+
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  });
+});
+export { login, getUserProfile };
