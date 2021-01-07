@@ -16,12 +16,14 @@ const login = asyncHandler(async (req, res, next) => {
   if (!user || !(await user.matchPassword(password)))
     return next(new ErrorResponse('Invalid credentials', 401));
 
+  const token = user.generateToken();
+
   res.status(200).json({
     _id: user._id,
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
-    token: null,
+    token,
   });
 });
 
