@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-import { USER_LOGIN_FAIL, USER_LOGIN_REQUEST } from './types';
+import {
+  USER_LOGIN_REQUEST,
+  USER_LOGIN_SUCCESS,
+  USER_LOGIN_FAIL,
+} from './types';
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -10,8 +14,13 @@ export const login = (email, password) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
     };
-    const { data } = axios.post('/api/auth/login', { email, password }, confog);
-    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
+    const { data } = await axios.post(
+      '/api/auth/login',
+      { email, password },
+      config
+    );
+    console.log(data);
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
     dispatch({
