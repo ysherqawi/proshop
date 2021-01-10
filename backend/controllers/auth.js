@@ -8,6 +8,9 @@ import User from '../models/User.js';
 const register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
 
+  const userExists = await User.findOne({ email });
+  if (userExists) return next(new ErrorResponse('User already exists', 400));
+
   const user = await User.create({ name, email, password });
 
   const token = user.generateToken();
