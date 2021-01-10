@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getUserDetails } from '../actions/user';
+import { getUserDetails, updateUserProfile } from '../actions/user';
 
 const ProfileScreen = ({ history }) => {
   const [name, setName] = useState('');
@@ -15,10 +15,17 @@ const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.userDetails);
-  const { loading, error, user } = userDetails;
+  const { loading: detailsLoading, error: detailsError, user } = userDetails;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const {
+    success,
+    error: updateError,
+    loading: updateLoading,
+  } = userUpdateProfile;
 
   useEffect(() => {
     if (!userInfo) {
@@ -38,7 +45,9 @@ const ProfileScreen = ({ history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
-      // Dispatch Update
+      dispatch(updateUserProfile({ id: user._id, name, email, password }));
+      setPassword('');
+      setConfirmPassword('');
     }
   };
 
@@ -46,9 +55,11 @@ const ProfileScreen = ({ history }) => {
     <Row>
       <Col md={4}>
         <h2>User Profile</h2>
+        {detailsError && <Message variant='danger'>{detailsError}</Message>}
+        {updateError && <Message variant='danger'>{updateError}</Message>}
         {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
-        {loading && <Loader />}
+        {success && <Message variant='success'>Profile Updated</Message>}
+        {(detailsLoading || updateLoading) && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name'>
             <Form.Label>Name</Form.Label>
