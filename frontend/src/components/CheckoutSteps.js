@@ -1,14 +1,14 @@
 import React from 'react';
-import { Nav, ProgressBar, Container } from 'react-bootstrap';
+import { Nav, ProgressBar } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import FormContainer from './FormContainer';
 
 const CheckoutSteps = ({ step1, step2, step3, step4, now }) => {
   return (
     <>
-      <Container>
+      <FormContainer>
         <ProgressBar now={now} />
-      </Container>
-
+      </FormContainer>
       <Nav className='justify-content-center mb4'>
         <Nav.Item>
           {step1 ? (
