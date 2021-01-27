@@ -12,8 +12,8 @@ const addOrderItems = asyncHandler(async (req, res, next) => {
     paymentMethod,
     itemsPrice,
     shippingPrice,
-    taxprice,
-    totlaPrice,
+    taxPrice,
+    totalPrice,
   } = req.body;
 
   if (orderItems && orderItems.length === 0)
@@ -26,8 +26,8 @@ const addOrderItems = asyncHandler(async (req, res, next) => {
     paymentMethod,
     itemsPrice,
     shippingPrice,
-    taxprice,
-    totlaPrice,
+    taxPrice,
+    totalPrice,
   });
   await order.save();
 
@@ -38,10 +38,11 @@ const addOrderItems = asyncHandler(async (req, res, next) => {
 // @route   GET /api/orders/:id
 // @access  Private
 const getOrder = asyncHandler(async (req, res, next) => {
-  const order = await (await Order.findById(req.params.id)).populate(
+  const order = await Order.findById(req.params.id).populate(
     'user',
     'name email'
   );
+
   if (!order)
     return next(
       new ErrorResponse(`Order not found with id of ${req.params.id}`, 404)
