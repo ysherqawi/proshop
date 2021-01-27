@@ -27,10 +27,8 @@ export const orderCreateReducer = (
 
 export const orderDetailsReducer = (
   state = {
-    loading: null,
+    loading: true,
     order: {},
-    orderItems: [],
-    shippingAddress: {},
     error: null,
   },
   action
