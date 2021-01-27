@@ -19,13 +19,9 @@ import { createOrder } from '../actions/order';
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-  const {
-    cartItems,
-    shippingAddress: { address, city, postalCode, country },
-    paymentMethod,
-  } = cart;
+  const { cartItems, shippingAddress, paymentMethod } = cart;
 
-  if (!address) history.push('/shipping');
+  if (!shippingAddress.address) history.push('/shipping');
   if (!paymentMethod) history.push('/payment');
 
   // Calculate prices
@@ -51,9 +47,9 @@ const PlaceOrderScreen = ({ history }) => {
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
-        orderItems: cart.cartItems,
-        shippingAddress: cart.shippingAddress,
-        paymentMethod: cart.paymentMethod,
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
@@ -71,7 +67,8 @@ const PlaceOrderScreen = ({ history }) => {
               <h2>Shipping</h2>
               <p>
                 <strong>Address: </strong>
-                {address}, {city} {postalCode}, {country}
+                {shippingAddress.address}, {shippingAddress.city},{' '}
+                {shippingAddress.postalCode}, {shippingAddress.country}
               </p>
             </ListGroup.Item>
             <ListGroup.Item>
