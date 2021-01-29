@@ -15,6 +15,7 @@ import Loader from '../components/Loader';
 import CheckoutSteps from '../components/CheckoutSteps';
 import addDecimals from '../utils/addDecimals';
 import { createOrder } from '../actions/order';
+import { ORDER_CREATE_RESET } from '../actions/types';
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -40,7 +41,10 @@ const PlaceOrderScreen = ({ history }) => {
   const { loading, order, success, error } = orderCreate;
 
   useEffect(() => {
-    if (success) history.push(`/order/${order._id}`);
+    if (success) {
+      history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
     //eslint-disable-next-line
   }, [history, success]);
 
