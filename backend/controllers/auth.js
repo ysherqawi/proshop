@@ -53,7 +53,7 @@ const login = asyncHandler(async (req, res, next) => {
 // @route   GET /api/auth/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user._id);
   if (!user) return next(new ErrorResponse('User not found', 404));
 
   res.status(200).json({
@@ -68,7 +68,7 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
 // @route   PUT /api/auth/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user._id);
   if (!user) return next(new ErrorResponse('User not found', 404));
 
   user.name = req.body.name || user.name;
