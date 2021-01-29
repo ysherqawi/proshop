@@ -81,4 +81,18 @@ const updateOrderToPaid = asyncHandler(async (req, res, next) => {
   });
 });
 
-export { addOrderItems, getOrder, updateOrderToPaid };
+// @desc    Get current user orders
+// @route   GET /api/orders/myorders
+// @access  Private
+const getCurrentUserOrders = asyncHandler(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id });
+
+  if (!orders) return next(new ErrorResponse(`No orders found!`, 404));
+
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
+export { addOrderItems, getOrder, updateOrderToPaid, getCurrentUserOrders };
