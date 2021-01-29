@@ -11,9 +11,11 @@ import {
   USER_DETAILS_FAIL,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
+  USER_DETAILS_RESET,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_SUCCESS,
+  ORDER_LIST_USER_RESET,
 } from './types';
 
 export const login = (email, password) => async (dispatch) => {
@@ -65,10 +67,13 @@ export const register = (name, email, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
+  dispatch({ type: USER_LOGOUT });
+  dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: ORDER_LIST_USER_RESET });
   localStorage.removeItem('userInfo');
-  dispatch({
-    type: USER_LOGOUT,
-  });
+  localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
+  localStorage.removeItem('paymentMethod');
 };
 
 export const getUserDetails = (endpoint) => async (dispatch, getState) => {

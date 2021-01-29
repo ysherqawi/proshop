@@ -9,15 +9,13 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_DETAILS_RESET,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
 } from '../actions/types';
 
-export const userLoginReducer = (
-  state = { loading: null, userInfo: null, error: null },
-  action
-) => {
+export const userLoginReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_LOGIN_REQUEST:
@@ -27,16 +25,13 @@ export const userLoginReducer = (
     case USER_LOGIN_FAIL:
       return { ...state, loading: false, error: payload };
     case USER_LOGOUT:
-      return { ...state, loading: false, userInfo: null, error: null };
+      return {};
     default:
       return state;
   }
 };
 
-export const userRegisterReducer = (
-  state = { loading: null, userInfo: null, error: null },
-  action
-) => {
+export const userRegisterReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_REGISTER_REQUEST:
@@ -46,16 +41,13 @@ export const userRegisterReducer = (
     case USER_REGISTER_FAIL:
       return { ...state, loading: false, error: payload };
     case USER_LOGOUT:
-      return { ...state, loading: false, userInfo: null, error: null };
+      return {};
     default:
       return state;
   }
 };
 
-export const userDetailsReducer = (
-  state = { loading: null, user: {}, error: null },
-  action
-) => {
+export const userDetailsReducer = (state = { user: {} }, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_DETAILS_REQUEST:
@@ -64,15 +56,14 @@ export const userDetailsReducer = (
       return { ...state, loading: false, user: payload };
     case USER_DETAILS_FAIL:
       return { ...state, loading: false, error: payload };
+    case USER_DETAILS_RESET:
+      return { user: {} };
     default:
       return state;
   }
 };
 
-export const userUpdateProfileReducer = (
-  state = { loading: null, success: null, userInfo: null, error: null },
-  action
-) => {
+export const userUpdateProfileReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_UPDATE_PROFILE_REQUEST:
