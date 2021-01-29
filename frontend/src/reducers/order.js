@@ -11,10 +11,7 @@ import {
   ORDER_PAY_RESET,
 } from '../actions/types';
 
-export const orderCreateReducer = (
-  state = { loading: null, order: {}, success: null, error: null },
-  action
-) => {
+export const orderCreateReducer = (state = {}, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -32,8 +29,6 @@ export const orderCreateReducer = (
 export const orderDetailsReducer = (
   state = {
     loading: true,
-    order: {},
-    error: null,
   },
   action
 ) => {
@@ -51,14 +46,7 @@ export const orderDetailsReducer = (
   }
 };
 
-export const orderPayReducer = (
-  state = {
-    loading: null,
-    success: null,
-    error: null,
-  },
-  action
-) => {
+export const orderPayReducer = (state = {}, action) => {
   const { type, payload } = action;
   switch (type) {
     case ORDER_PAY_REQUEST:
