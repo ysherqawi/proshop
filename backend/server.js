@@ -5,6 +5,7 @@ import connectDB from './config/db.js';
 import products from './routes/products.js';
 import auth from './routes/auth.js';
 import orders from './routes/orders.js';
+import users from './routes/users.js';
 import { notFound, errorHandler } from './middlewares/error.js';
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 app.use('/api/products', products);
 app.use('/api/auth', auth);
 app.use('/api/orders', orders);
+app.use('/api/users', users);
 
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
