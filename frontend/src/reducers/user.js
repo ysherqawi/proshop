@@ -13,6 +13,10 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_RESET,
 } from '../actions/types';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -72,6 +76,22 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return { ...state, loading: false, success: true, userInfo: payload };
     case USER_UPDATE_PROFILE_FAIL:
       return { ...state, loading: false, success: false, error: payload };
+    default:
+      return state;
+  }
+};
+
+export const userListReducer = (state = { users: [] }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case USER_LIST_REQUEST:
+      return { ...state, loading: true };
+    case USER_LIST_SUCCESS:
+      return { ...state, loading: false, users: payload };
+    case USER_LIST_FAIL:
+      return { ...state, loading: false, error: payload };
+    case USER_LIST_RESET:
+      return { users: [] };
     default:
       return state;
   }
