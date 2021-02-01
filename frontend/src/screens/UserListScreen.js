@@ -42,6 +42,7 @@ const UserListScreen = ({ history }) => {
           <Table borderd hover striped responsive variant='dark' size='sm'>
             <thead>
               <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Admin</th>
@@ -52,8 +53,9 @@ const UserListScreen = ({ history }) => {
               {users.map((user) => (
                 <tr key={user._id}>
                   <td>{user._id}</td>
+                  <td>{user.name}</td>
                   <td>
-                    <a href={`mailto:${user.email}`}></a> {user.email}
+                    <a href={`mailto:${user.email}`}>{user.email}</a>
                   </td>
                   <td>
                     {user.isAdmin ? (
