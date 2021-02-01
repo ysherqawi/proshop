@@ -57,10 +57,13 @@ const getUserProfile = asyncHandler(async (req, res, next) => {
   if (!user) return next(new ErrorResponse('User not found', 404));
 
   res.status(200).json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    isAdmin: user.isAdmin,
+    success: true,
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    },
   });
 });
 
