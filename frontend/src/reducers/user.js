@@ -20,6 +20,10 @@ import {
   USER_DELETE_REQUEST,
   USER_DELETE_SUCCESS,
   USER_DELETE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL,
+  USER_UPDATE_RESET,
 } from '../actions/types';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -109,6 +113,22 @@ export const userDeleteReducer = (state = {}, action) => {
       return { ...state, loading: false, success: true };
     case USER_DELETE_FAIL:
       return { ...state, loading: false, error: payload };
+    default:
+      return state;
+  }
+};
+
+export const userUpdateReducer = (state = {}, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case USER_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case USER_UPDATE_SUCCESS:
+      return { ...state, loading: false, success: true };
+    case USER_UPDATE_FAIL:
+      return { ...state, loading: false, error: payload };
+    case USER_UPDATE_RESET:
+      return {};
     default:
       return state;
   }
