@@ -4,7 +4,8 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getProducts, deleteProduct } from '../actions/product';
+import { getProducts, createProduct, deleteProduct } from '../actions/product';
+import { PRODUCT_CREATE_RESET } from '../actions/types';
 
 const ProductListScreen = ({ history, match }) => {
   const dispatch = useDispatch();
@@ -12,6 +13,15 @@ const ProductListScreen = ({ history, match }) => {
   const { userInfo } = userLogin;
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
+
+  const productCreate = useSelector((state) => state.productCreate);
+  const {
+    loading: createLoading,
+    success: createSuccess,
+    error: createError,
+    product: createdProduct,
+  } = productCreate;
+
   const productDelete = useSelector((state) => state.productDelete);
   const {
     loading: deleteLoading,
@@ -20,11 +30,24 @@ const ProductListScreen = ({ history, match }) => {
   } = productDelete;
 
   useEffect(() => {
-    if (userInfo && userInfo.isAdmin) dispatch(getProducts());
-    else history.push('/login');
-  }, [dispatch, history, userInfo, deleteSuccess]);
+    dispatch({ type: PRODUCT_CREATE_RESET });
+    if (!userInfo.isAdmin) history.push('/login');
 
-  const createProductHandler = (product) => {};
+    if (createSuccess)
+      history.push(`/admin/product/${createdProduct._id}/edit`);
+    else dispatch(getProducts());
+  }, [
+    dispatch,
+    history,
+    userInfo,
+    deleteSuccess,
+    createSuccess,
+    createdProduct,
+  ]);
+
+  const createProductHandler = () => {
+    dispatch(createProduct());
+  };
   const deleteHandler = (id) => {
     if (window.confirm('are you sure?')) dispatch(deleteProduct(id));
   };
@@ -47,11 +70,15 @@ const ProductListScreen = ({ history, match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
-          {deleteLoading && <Loader />}
+          {(deleteLoading || createLoading) && <Loader />}
+          {createSuccess && (
+            <Message variant='success'>Product created!</Message>
+          )}
           {deleteSuccess && (
             <Message variant='success'>Product deleted!</Message>
           )}
           {deleteError && <Message variant='danger'>{deleteError}</Message>}
+          {createError && <Message variant='danger'>{createError}</Message>}
 
           <Table borderd hover striped responsive variant='dark' size='sm'>
             <thead>
