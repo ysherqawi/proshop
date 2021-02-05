@@ -13,6 +13,9 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_SUCCESS,
   PRODUCT_CREATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
 } from './types';
 
 export const getProducts = () => async (dispatch) => {
@@ -69,6 +72,33 @@ export const createProduct = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_CREATE_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const updateProduct = (product) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const {
+      data: { updatedProduct },
+    } = await axios.put(`/api/products/${product._id}`, product, config);
+    dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: updatedProduct });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_UPDATE_FAIL,
       payload: error.response.data.message,
     });
   }
