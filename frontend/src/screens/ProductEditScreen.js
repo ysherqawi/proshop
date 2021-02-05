@@ -5,9 +5,10 @@ import { Form, Button } from 'react-bootstrap';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
-import { getProduct } from '../actions/product';
+import { getProduct, updateProduct } from '../actions/product';
+import { PRODUCT_UPDATE_RESET, PRODUCT_DETAILS_RESET } from '../actions/types';
 
-const ProductEditScreen = ({ match }) => {
+const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id;
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
@@ -20,23 +21,47 @@ const ProductEditScreen = ({ match }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: updateLoading,
+    error: updateError,
+    success: updateSuccess,
+  } = productUpdate;
 
   useEffect(() => {
-    if (!product.name || product._id !== productId)
+    if (updateSuccess) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      dispatch({ type: PRODUCT_DETAILS_RESET });
+      return history.push('/admin/productlist');
+    }
+
+    if (!product.name || product._id !== productId) {
       dispatch(getProduct(productId));
-    else {
+    } else {
       setName(product.name);
       setPrice(product.price);
       setImage(product.image);
       setBrand(product.brand);
       setCategory(product.category);
-      setDescription(product.description);
       setCountInStock(product.countInStock);
+      setDescription(product.description);
     }
-  }, [product, productId, dispatch]);
+  }, [dispatch, history, productId, product, updateSuccess]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(
+      updateProduct({
+        _id: productId,
+        name,
+        price,
+        image,
+        brand,
+        description,
+        category,
+        countInStock,
+      })
+    );
   };
 
   return (
@@ -46,7 +71,8 @@ const ProductEditScreen = ({ match }) => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
-        {loading && <Loader />}
+        {(loading || updateLoading) && <Loader />}
+        {updateError && <Message variant='danger'>{updateError}</Message>}
         {error ? (
           <Message variant='danger'>{error}</Message>
         ) : (
