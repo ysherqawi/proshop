@@ -7,7 +7,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import { getProduct, updateProduct } from '../actions/product';
-import { PRODUCT_UPDATE_RESET, PRODUCT_DETAILS_RESET } from '../actions/types';
+import { PRODUCT_UPDATE_RESET } from '../actions/types';
 
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id;
@@ -34,7 +34,6 @@ const ProductEditScreen = ({ match, history }) => {
   useEffect(() => {
     if (updateSuccess) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
-      dispatch({ type: PRODUCT_DETAILS_RESET });
       return history.push('/admin/productlist');
     }
 

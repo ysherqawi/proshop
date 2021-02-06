@@ -96,6 +96,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
       data: { updatedProduct },
     } = await axios.put(`/api/products/${product._id}`, product, config);
     dispatch({ type: PRODUCT_UPDATE_SUCCESS, payload: updatedProduct });
+    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: updatedProduct });
   } catch (error) {
     dispatch({
       type: PRODUCT_UPDATE_FAIL,
