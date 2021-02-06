@@ -14,6 +14,9 @@ import {
   ORDER_LIST_USER_SUCCESS,
   ORDER_LIST_USER_FAIL,
   ORDER_LIST_USER_RESET,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
 } from '../actions/types';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -80,6 +83,20 @@ export const orderListUserReducer = (state = { orders: [] }, action) => {
       return { ...state, loading: false, error: payload };
     case ORDER_LIST_USER_RESET:
       return { orders: [] };
+    default:
+      return state;
+  }
+};
+
+export const orderListReducer = (state = { orders: [] }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case ORDER_LIST_REQUEST:
+      return { ...state, loading: true };
+    case ORDER_LIST_SUCCESS:
+      return { ...state, loading: false, orders: payload };
+    case ORDER_LIST_FAIL:
+      return { ...state, loading: false, error: payload };
     default:
       return state;
   }
