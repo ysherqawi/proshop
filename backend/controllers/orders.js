@@ -95,4 +95,24 @@ const getCurrentUserOrders = asyncHandler(async (req, res, next) => {
   });
 });
 
-export { addOrderItems, getOrder, updateOrderToPaid, getCurrentUserOrders };
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Private/Admin
+const getOrders = asyncHandler(async (req, res, next) => {
+  const orders = await Order.find().populate('user', 'id name');
+
+  if (!orders) return next(new ErrorResponse(`No orders found!`, 404));
+
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+});
+
+export {
+  addOrderItems,
+  getOrder,
+  updateOrderToPaid,
+  getCurrentUserOrders,
+  getOrders,
+};
