@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
@@ -17,6 +18,8 @@ const ProductEditScreen = ({ match, history }) => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [countInStock, setCountInStock] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
@@ -47,6 +50,25 @@ const ProductEditScreen = ({ match, history }) => {
       setDescription(product.description);
     }
   }, [dispatch, history, productId, product, updateSuccess]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+    try {
+      const config = {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      };
+      const { data } = await axios.post('/api/uploads', formData, config);
+      setImage(data);
+      setUploading(false);
+      setUploadError('');
+    } catch (error) {
+      setUploadError('Error: Upload images only and try again.');
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -106,6 +128,14 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setImage(e.target.value)}
                 required
               ></Form.Control>
+              <Form.File
+                id='image-F'
+                label='Choose File'
+                custom
+                onChange={uploadFileHandler}
+              ></Form.File>
+              {uploading && <Loader />}
+              {uploadError && <Message variant='danger'>{uploadError}</Message>}
             </Form.Group>
             <Form.Group controlId='brand'>
               <Form.Label>Brand</Form.Label>
