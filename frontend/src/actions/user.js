@@ -26,6 +26,7 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   ORDER_LIST_USER_RESET,
+  PRODUCT_CREATE_REVIEW_RESET,
 } from './types';
 
 export const login = (email, password) => async (dispatch) => {
@@ -85,6 +86,8 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDER_LIST_USER_RESET });
   dispatch({ type: USER_LIST_RESET });
+  dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
+  dispatch({ type: USER_DETAILS_RESET });
 };
 
 export const getUserDetails = (endpoint) => async (dispatch, getState) => {
