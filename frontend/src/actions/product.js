@@ -21,14 +21,16 @@ import {
   PRODUCT_CREATE_REVIEW_FAIL,
 } from './types';
 
-export const getProducts = (keyword = '') => async (dispatch) => {
+export const getProducts = (keyword = '', pageNumber = '') => async (
+  dispatch
+) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
-    const {
-      data: { products },
-    } = await axios.get(`/api/products?keyword=${keyword}`);
-    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: products });
+    const { data } = await axios.get(
+      `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+    );
+    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
       type: PRODUCT_LIST_FAIL,
