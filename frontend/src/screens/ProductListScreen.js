@@ -4,15 +4,18 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import Paginate from '../components/Paginate';
 import { getProducts, createProduct, deleteProduct } from '../actions/product';
 import { PRODUCT_CREATE_RESET } from '../actions/types';
 
 const ProductListScreen = ({ history, match }) => {
+  const pageNumber = match.params.pageNumber || 1;
+
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
+  const { loading, products, pages, page, error } = productList;
 
   const productCreate = useSelector((state) => state.productCreate);
   const {
@@ -35,7 +38,7 @@ const ProductListScreen = ({ history, match }) => {
 
     if (createSuccess)
       history.push(`/admin/product/${createdProduct._id}/edit`);
-    else dispatch(getProducts());
+    else dispatch(getProducts('', pageNumber));
   }, [
     dispatch,
     history,
@@ -43,6 +46,7 @@ const ProductListScreen = ({ history, match }) => {
     deleteSuccess,
     createSuccess,
     createdProduct,
+    pageNumber,
   ]);
 
   const createProductHandler = () => {
@@ -117,6 +121,8 @@ const ProductListScreen = ({ history, match }) => {
               ))}
             </tbody>
           </Table>
+
+          <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
     </>
