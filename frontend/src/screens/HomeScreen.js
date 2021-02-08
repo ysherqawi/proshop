@@ -25,11 +25,17 @@ const HomeScreen = ({ match }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
+          {!products.length ? (
+            <Col md={5}>
+              <Message variant='info'>No products found.</Message>
             </Col>
-          ))}
+          ) : (
+            products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                <Product product={product} />
+              </Col>
+            ))
+          )}
         </Row>
       )}
     </>
