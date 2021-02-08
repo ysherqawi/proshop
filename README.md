@@ -4,7 +4,7 @@
 
 ## Screenshot
 
-![screenshot](/uploads/ScreenShot.png)
+![screenshot](https://github.com/ysherqawi/proshop/blob/master/uploads/Screenshot.png)
 
 ## Features
 
