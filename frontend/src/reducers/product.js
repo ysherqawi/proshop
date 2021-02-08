@@ -2,6 +2,9 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
   PRODUCT_LIST_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
+  PRODUCT_TOP_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
@@ -42,6 +45,20 @@ export const productListReducer = (
       };
     case PRODUCT_LIST_FAIL:
       return { ...state, error: payload, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const productTopRatedReducer = (state = { products: [] }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case PRODUCT_TOP_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_TOP_SUCCESS:
+      return { ...state, loading: false, products: payload };
+    case PRODUCT_TOP_FAIL:
+      return { ...state, loading: false, error: payload };
     default:
       return state;
   }
