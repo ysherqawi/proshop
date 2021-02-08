@@ -6,17 +6,19 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { getProducts } from '../actions/product';
 
-const HomeScreen = () => {
+const HomeScreen = ({ match }) => {
+  const keyword = match.params.keyword;
+
   const dispatch = useDispatch();
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
 
   useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
+    dispatch(getProducts(keyword));
+  }, [dispatch, keyword]);
   return (
     <>
-      <h1>Latest Products</h1>
+      <h1>{keyword ? 'Search Result' : 'Latest Products'}</h1>
       {loading ? (
         <Loader />
       ) : error ? (

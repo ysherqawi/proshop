@@ -21,13 +21,13 @@ import {
   PRODUCT_CREATE_REVIEW_FAIL,
 } from './types';
 
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (keyword = '') => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     const {
       data: { products },
-    } = await axios.get('/api/products');
+    } = await axios.get(`/api/products?keyword=${keyword}`);
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: products });
   } catch (error) {
     dispatch({
