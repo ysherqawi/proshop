@@ -13,6 +13,7 @@ import {
 import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Meta from '../components/Meta';
 import { getProduct, createProductReview } from '../actions/product';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../actions/types';
 
@@ -45,6 +46,7 @@ const ProductScreen = ({ match, history }) => {
       dispatch(getProduct(productId));
       dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
+    // eslint-disable-next-line
   }, [dispatch, match, productReviewSuccess]);
 
   const addToCartHandler = () => {
@@ -72,6 +74,7 @@ const ProductScreen = ({ match, history }) => {
         <Message variant='danger'>{error}</Message>
       ) : (
         <>
+          <Meta title={product.name} />
           <Row>
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />
